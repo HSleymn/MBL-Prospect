@@ -1,0 +1,27 @@
+# Fichiers Python
+*.pyc
+__pycache__/
+
+# Environnement virtuel
+env/
+venv/
+
+# Base de données SQLite
+*.sqlite3
+
+# Fichiers/Dossiers Django
+/static/
+media/
+
+# Fichiers logs
+*.log
+
+# Autres fichiers inutiles
+.DS_Store
+*.swp
+*.bak
+
+# Dossiers de build
+*.egg-info/
+dist/
+build/

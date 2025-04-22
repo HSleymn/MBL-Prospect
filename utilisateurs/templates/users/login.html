@@ -1,0 +1,43 @@
+{% load static %}
+<html lang="fr">
+<head>
+    <meta charset="UTF-8">
+<link rel="stylesheet" href="{% static 'css/loginstyles.css' %}">
+    <title>Connexion</title>
+
+</head>
+<body>
+
+    <form method="post">
+        {% csrf_token %}
+        <div class="login-card">
+            <img src="{% static 'img/logo.png' %}" alt="Logo" class="logo">
+            <p class="conntext">Connexion</p>
+              {% if form.non_field_errors %}
+            <div class="errortext">{{ form.non_field_errors }}</div>
+        {% endif %}
+         <!-- Email -->
+        {{ form.username.errors }}
+        <input
+            type="text"
+            name="{{ form.username.name }}"
+            placeholder="Adresse e-mail"
+            class="form-control"
+            required
+        >
+
+        <!-- Mot de passe -->
+        {{ form.password.errors }}
+        <input
+            type="password"
+            name="{{ form.password.name }}"
+            placeholder="Mot de passe"
+            class="form-control"
+            required
+        >
+
+        <button type="submit" class="btn">Se connecter</button>
+<p>Pas encore de compte ? <a href="{% url 'signup' %}">Inscrivez-vous ici</a></p>        </div>
+    </form>
+</body>
+</html>

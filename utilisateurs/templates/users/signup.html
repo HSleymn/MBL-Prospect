@@ -1,0 +1,86 @@
+{% load static %}
+
+<html>
+<head>
+    <title>Inscription</title>
+    <style>
+        body {
+            margin: 0;
+            font-family: 'Segoe UI', sans-serif;
+            background-color: #1b2e59;
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            height: 100vh;
+        }
+        .login-card {
+            background: white;
+            border-radius: 16px;
+            padding: 40px;
+            width: 360px;
+            box-shadow: 0 8px 20px rgba(0, 0, 0, 0.2);
+            text-align: center;
+        }
+        .logo {
+            width: 350px;
+            margin : 0;
+            padding : 0;
+        }
+        .conntext {
+            color: #0c1c3c;
+            font-size : 3em;
+            font-weight : 600;
+            margin: 0;
+            padding: 0.1em;
+            padding-bottom : 0.3em;
+        }
+        input {
+            width: 100%;
+            padding: 12px;
+            margin: 0px 0;
+            border-radius: 8px;
+            border: 1px solid #d0d0d0;
+            font-size: 14px;
+        }
+        .btn {
+            background-color: #5b46f0;
+            color: white;
+            border: none;
+            border-radius: 8px;
+            padding: 14px;
+            font-size: 16px;
+            width: 100%;
+            margin-top: 20px;
+            cursor: pointer;
+
+        }
+        .btn:hover {
+            background-color: #4734cc;
+        }
+        .forgot {
+            margin-top: 20px;
+            font-size: 14px;
+            color: #5b46f0;
+            text-decoration: none;
+            display: inline-block;
+        }
+    </style>
+</head>
+<body>
+
+<div class="login-card">
+            <img src="{% static 'img/logo.png' %}" alt="Logo" class="logo">
+
+    <p class="conntext">Inscription</p>
+        <form method="post">
+
+        {% csrf_token %}
+        {{ form.as_p }}
+        <button type="submit" class="btn">S'inscrire</button>
+                <p>Déjà un compte ? <a href="{% url 'login' %}">Connectez-vous ici</a></p>
+    </form>
+
+            </div>
+
+</body>
+</html>

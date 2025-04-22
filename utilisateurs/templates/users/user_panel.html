@@ -1,0 +1,22 @@
+{% load static %}
+<html lang="fr">
+<head>
+    <meta charset="UTF-8">
+    <title>Mon espace</title>
+    <link rel="stylesheet" href="{% static 'style.css' %}">
+</head>
+<body>
+    <div class="login-card">
+        <h1 class="conntext">Bienvenue, {{ user.first_name }} 👋</h1>
+        <p>Email : {{ user.email }}</p>
+        {% if user.google_token %}
+        <p>Token Google : {{ user.google_token }}</p>
+        {% else %}
+        <p>Pas de token Google enregistré.</p>
+        {% endif %}
+<form method="post" action="{% url 'logout' %}">
+    {% csrf_token %}
+    <button type="submit" class="btn">Déconnexion</button>
+</form>    </div>
+</body>
+</html>
