@@ -3,6 +3,7 @@
 __pycache__/
 
 # Environnement virtuel
+.venv/
 env/
 venv/
 
@@ -20,6 +21,8 @@ media/
 .DS_Store
 *.swp
 *.bak
+
+.idea/
 
 # Dossiers de build
 *.egg-info/
