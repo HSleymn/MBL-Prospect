@@ -1,22 +1,20 @@
-{% load static %}
-<html lang="fr">
-<head>
-    <meta charset="UTF-8">
-    <title>Mon espace</title>
-    <link rel="stylesheet" href="{% static 'style.css' %}">
-</head>
-<body>
-    <div class="login-card">
-        <h1 class="conntext">Bienvenue, {{ user.first_name }} 👋</h1>
-        <p>Email : {{ user.email }}</p>
-        {% if user.google_token %}
-        <p>Token Google : {{ user.google_token }}</p>
-        {% else %}
-        <p>Pas de token Google enregistré.</p>
-        {% endif %}
-<form method="post" action="{% url 'logout' %}">
-    {% csrf_token %}
-    <button type="submit" class="btn">Déconnexion</button>
-</form>    </div>
-</body>
-</html>
+<!-- templates/profil.html -->
+
+
+{% block content %}
+    <main class="main-content">
+      <h2>Profil</h2>
+      <section class="dashboard-card">
+        <h3>Informations du profil</h3>
+        <ul>
+          <li><strong>Nom :</strong> Philippe Martin</li>
+          <li><strong>Email :</strong> philippe.martin@example.com</li>
+          <li><strong>Company :</strong> LMN Solutions</li>
+          <li><strong>Adresse :</strong> 456 Avenue des Technologies</li>
+          <li><strong>Ville :</strong> Lyon</li>
+          <li><strong>Pays :</strong> France</li>
+        </ul>
+        <button>Modifier</button>
+      </section>
+    </main>
+{% endblock %}

@@ -1,0 +1,29 @@
+{% load static %}
+<html lang="fr">
+<head>
+  <meta charset="UTF-8" />
+  <title>{% block title %}MBL Prospect{% endblock %}</title>
+    <script src="https://unpkg.com/htmx.org@1.9.2"></script>
+<link rel="stylesheet" href="{% static 'css/panelstyless.css' %}">
+</head>
+<body>
+  <div class="container">
+    {% include "users/sidebar.html" %}  <!-- Sidebar incluse ici -->
+
+    <main class="main-content" id="content">
+      {% block content %}
+
+          <main class="main-content">
+      <h2>Tableau de bord</h2>
+      <section class="dashboard-card">
+        <h3>Statistiques récentes</h3>
+        <p>Les envois récents ont montré une augmentation de 15% du taux d'ouverture.</p>
+        <p>Les offres les plus populaires sont celles dans le secteur technologique.</p>
+        <button>Voir plus</button>
+      </section>
+    </main>
+        {% endblock %}
+    </main>
+  </div>
+</body>
+</html>

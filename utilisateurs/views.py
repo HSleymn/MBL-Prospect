@@ -22,7 +22,7 @@ def login_view(request):
             messages.error(request, "Identifiants invalides.")
     else:
         form = AuthenticationForm()
-
+    print(request.user)
     return render(request, 'users/login.html', {'form': form})
 
 
@@ -39,7 +39,34 @@ def signup_view(request):
 # Vue de déconnexion
 # Pas besoin de créer une vue manuelle, Django le fait déjà avec LogoutView
 
+def panel(request):
+    user = request.user  # Récupère l'utilisateur connecté
+    return render(request, 'users/panel.html', {'user': user})
+
 @login_required
 def user_panel(request):
+    if not request.headers.get('HX-Request'):
+        return redirect('panel')
     user = request.user  # Récupère l'utilisateur connecté
     return render(request, 'users/user_panel.html', {'user': user})
+
+@login_required
+def offer_panel(request):
+    if not request.headers.get('HX-Request'):
+        return redirect('panel')
+    user = request.user  # Récupère l'utilisateur connecté
+    return render(request, 'users/offer_panel.html', {'user': user})
+
+def mailsent_panel(request):
+    if not request.headers.get('HX-Request'):
+        return redirect('panel')
+    user = request.user  # Récupère l'utilisateur connecté
+    return render(request, 'users/mailsent_panel.html', {'user': user})
+def dashboard_panel(request):
+    if not request.headers.get('HX-Request'):
+        return redirect('panel')
+    user = request.user  # Récupère l'utilisateur connecté
+    return render(request, 'users/dashboard_panel.html', {'user': user})
+
+
+

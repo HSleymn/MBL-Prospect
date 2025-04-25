@@ -12,6 +12,9 @@ https://docs.djangoproject.com/en/5.2/ref/settings/
 
 from pathlib import Path
 import os
+
+from django.conf.global_settings import SESSION_COOKIE_AGE
+
 # Build paths inside the project like this: BASE_DIR / 'subdir'.
 BASE_DIR = Path(__file__).resolve().parent.parent
 print(BASE_DIR)
@@ -45,8 +48,7 @@ INSTALLED_APPS = [
     'utilisateurs',
     'commandes',
     'import_export',
-
-]
+    ]
 
 MIDDLEWARE = [
     'django.middleware.security.SecurityMiddleware',
@@ -81,6 +83,10 @@ SITE_ID = 2
 ACCOUNT_USER_MODEL_USERNAME_FIELD = None
 ACCOUNT_USERNAME_REQUIRED = False
 ACCOUNT_EMAIL_REQUIRED = True
+ACCOUNT_SIGNUP_FIELDS = ['email', 'password1', 'password2']
+ACCOUNT_LOGIN_METHODS = ['email', 'password1', 'password2']
+SESSION_EXPIRE_AT_BROWSER_CLOSE = True
+SESSION_SAVE_EVERY_REQUEST = True
 ACCOUNT_AUTHENTICATION_METHOD = 'email'
 AUTHENTICATION_BACKENDS = [
     'django.contrib.auth.backends.ModelBackend',
@@ -88,7 +94,7 @@ AUTHENTICATION_BACKENDS = [
 ]
 LOGOUT_REDIRECT_URL = '../utilisateurs/login/'
 STATIC_URL = '/static/'
-
+LOGIN_URL = '../utilisateurs/login/'  # Mets ici l'URL de ta page de connexion
 STATICFILES_DIRS = [
     Path(BASE_DIR, 'static'),
 ]

@@ -1,0 +1,49 @@
+{% load static %}
+
+<aside class="sidebar">
+  <div class="logo">
+    <img src="{% static 'img/logopanel.png' %}" alt="Logo" class="logo">
+  </div>
+  <nav>
+    <ul id="nav-list">
+      <li>
+        <a href="{% url 'dashboard_panel' %}" hx-get="{% url 'dashboard_panel' %}" hx-target="#content" hx-push-url="true">
+          📊 Tableau de bord
+        </a>
+      </li>
+      <li>
+        <a href="{% url 'mailsent_panel' %}" hx-get="{% url 'mailsent_panel' %}" hx-target="#content" hx-push-url="true">
+          ✉️ Envois
+        </a>
+      </li>
+      <li>
+        <a href="{% url 'offer_panel' %}" hx-get="{% url 'offer_panel' %}" hx-target="#content" hx-push-url="true">
+          🏷️ Offres
+        </a>
+      </li>
+      <li>
+        <a href="{% url 'user_panel' %}" hx-get="{% url 'user_panel' %}" hx-target="#content" hx-push-url="true">
+          👤 Compte
+        </a>
+      </li>
+    </ul>
+  </nav>
+</aside>
+
+<script>
+  // Activer la classe "active" sur l'élément cliqué
+  document.querySelectorAll('#nav-list a').forEach(link => {
+    link.addEventListener('click', function () {
+      document.querySelectorAll('#nav-list li').forEach(li => li.classList.remove('active'));
+      this.parentElement.classList.add('active');
+    });
+  });
+
+  // Activer dynamiquement "active" sur la bonne entrée au chargement (pour les refresh)
+  const currentPath = window.location.pathname;
+  document.querySelectorAll('#nav-list a').forEach(link => {
+    if (link.getAttribute('href') === currentPath) {
+      link.parentElement.classList.add('active');
+    }
+  });
+</script>
