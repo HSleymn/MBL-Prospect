@@ -1,0 +1,25 @@
+{% block content %}
+ <main class="main-content">
+      <h2>Mon panier</h2>
+      <section class="dashboard-card">
+<form hx-post="{% url 'update_cart' %}" hx-target="#content" hx-swap="innerHTML">
+    {% csrf_token %}
+    <table>
+        {% for item in items %}
+        <tr>
+    <li>{{ item.offer.title }} - {{ item.quantity }} x {{ item.offer.price }} €
+                <input type="number" name="quantities_{{ item.id }}" value="{{ item.quantity }}" min="0">
+              </li>
+        </tr>
+        {% endfor %}
+    </table>
+    <p>Total : {{ total }} €</p>
+
+    <button type="submit">Rafraîchir le panier</button>
+
+</form>
+          <a href="{% url 'payment' cart.id%}" class="btn btn-primary">Passer au paiement</a>
+    </section>
+    </main>
+{% endblock %}
+

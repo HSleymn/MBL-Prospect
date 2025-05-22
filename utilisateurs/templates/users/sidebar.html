@@ -26,6 +26,12 @@
           👤 Compte
         </a>
       </li>
+       <li>
+        <form action="{% url 'logout_view' %}" method="post">
+  {% csrf_token %}
+  <button type="submit">Se déconnecter</button>
+</form>
+      </li>
     </ul>
   </nav>
 </aside>

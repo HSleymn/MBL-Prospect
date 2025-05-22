@@ -13,6 +13,7 @@ https://docs.djangoproject.com/en/5.2/ref/settings/
 from pathlib import Path
 import os
 
+from decouple import config
 from django.conf.global_settings import SESSION_COOKIE_AGE
 
 # Build paths inside the project like this: BASE_DIR / 'subdir'.
@@ -92,25 +93,42 @@ AUTHENTICATION_BACKENDS = [
     'django.contrib.auth.backends.ModelBackend',
     'allauth.account.auth_backends.AuthenticationBackend',
 ]
-LOGOUT_REDIRECT_URL = '../utilisateurs/login/'
+LOGOUT_REDIRECT_URL = '/utilisateurs/accounts/login/'
 STATIC_URL = '/static/'
 LOGIN_URL = '../utilisateurs/login/'  # Mets ici l'URL de ta page de connexion
 STATICFILES_DIRS = [
     Path(BASE_DIR, 'static'),
 ]
-LOGIN_REDIRECT_URL = '/'  # ou une autre page après connexion
+SOCIALACCOUNT_AUTO_SIGNUP = True
+SOCIALACCOUNT_QUERY_EMAIL = True
+
+LOGIN_REDIRECT_URL = '/utilisateurs/panel/'  # ou une autre page après connexion
 SOCIALACCOUNT_PROVIDERS = {
     'google': {
         'SCOPE': [
-            'email',
             'profile',
+            'email',
+            'https://www.googleapis.com/auth/gmail.send',
         ],
         'AUTH_PARAMS': {
-            'access_type': 'online',
+            'access_type': 'offline',
         },
-        'OAUTH_PKCE_ENABLED': True,
     }
 }
+LOGGING = {
+    'version': 1,
+    'disable_existing_loggers': False,
+    'handlers': {
+        'console': {
+            'class': 'logging.StreamHandler',
+        },
+    },
+    'root': {
+        'handlers': ['console'],
+        'level': 'INFO',
+    },
+}
+MIDDLEWARE += ['utilisateurs.middleware.DebugSocialLoginMiddleware']
 
 # Database
 # https://docs.djangoproject.com/en/5.2/ref/settings/#databases
@@ -151,7 +169,7 @@ LANGUAGE_CODE = 'fr-FR'
 TIME_ZONE = 'UTC'
 
 USE_I18N = True
-
+STANCER_SECRET_KEY = os.getenv('STANCER_SECRET_KEY')
 USE_TZ = True
 
 
@@ -168,3 +186,17 @@ DEFAULT_AUTO_FIELD = 'django.db.models.BigAutoField'
 
 # Définir le modèle utilisateur personnalisé (si tu as un modèle personnalisé)
 AUTH_USER_MODEL = 'utilisateurs.Users'  # 'utilisateurs' est l'application et 'User' est le modèle personnalisé
+
+EMAIL_BACKEND = 'django.core.mail.backends.smtp.EmailBackend'
+EMAIL_HOST = 'smtp.gmail.com'
+EMAIL_PORT = 587
+EMAIL_USE_TLS = True
+EMAIL_HOST_USER = 'ton_email@gmail.com'
+#CONSTANTES
+MAIL_ID_PRODUCT = 1
+COURRIER_ID_PRODUCT = 2
+
+
+
+STANCER_PRIVATE_KEY = config('STANCER_PRIVATE_KEY')
+STANCER_PUBLIC_KEY = config('STANCER_PUBLIC_KEY')

@@ -37,11 +37,12 @@
         input {
             width: 100%;
             padding: 12px;
-            margin: 0px 0;
+            margin: 10px 0;
             border-radius: 8px;
             border: 1px solid #d0d0d0;
             font-size: 14px;
         }
+
         .btn {
             background-color: #5b46f0;
             color: white;
@@ -64,6 +65,47 @@
             text-decoration: none;
             display: inline-block;
         }
+        input[type="radio"] {
+    display: none;
+}
+
+.role-selection {
+    display: flex;
+    justify-content: space-between;
+    gap: 10px;
+    margin: 20px 0;
+}
+
+.role-option {
+    flex: 1;
+    padding: 12px;
+    background-color: #f1f1f1;
+    border-radius: 8px;
+    border: 2px solid transparent;
+    cursor: pointer;
+    font-weight: bold;
+    transition: all 0.3s ease;
+    user-select: none;
+    text-align: center;
+}
+
+.role-option input[type="radio"]:checked + * {
+    /* Ne fonctionne pas ici, on doit cibler autrement */
+}
+
+.role-option:has(input[type="radio"]:checked) {
+    background-color: #d3d3d3; /* gris clair */
+    color: black;
+    border-color: #a9a9a9;
+}
+
+/* Supprimer le hover */
+.role-option:hover {
+    background-color: #d3d3d3;
+    cursor: pointer;
+}
+
+
     </style>
 </head>
 <body>
@@ -73,12 +115,27 @@
 
     <p class="conntext">Inscription</p>
         <form method="post">
+    {% csrf_token %}
 
-        {% csrf_token %}
-        {{ form.as_p }}
-        <button type="submit" class="btn">S'inscrire</button>
+    {{ form.email }}
+    {{ form.firstname }}
+    {{ form.lastname }}
+    {{ form.password1 }}
+    {{ form.password2 }}
+
+    <div class="role-selection">
+    {% for radio in form.roles %}
+        <label class="role-option">
+            {{ radio.tag }}
+            {{ radio.choice_label }}
+        </label>
+    {% endfor %}
+</div>
+
+
+    <button type="submit" class="btn">S'inscrire</button>
+</form>
                 <p>Déjà un compte ? <a href="{% url 'login' %}">Connectez-vous ici</a></p>
-    </form>
 
             </div>
 

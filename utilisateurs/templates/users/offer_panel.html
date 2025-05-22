@@ -5,15 +5,27 @@
     <main class="main-content">
       <h2>Offres</h2>
       <section class="dashboard-card">
-        <h3>Liste des offres disponibles</h3>
-        <ul>
-          <li>Offre A - 1000€ par mois</li>
-          <li>Offre B - 800€ par mois</li>
-        </ul>
-        <button>Ajouter une nouvelle offre</button>
+        <h3>Offres disponibles :</h3>
+
+          {% if offers %}
+              <ul>
+                  {% for offer in offers %}
+                      <li>
+                          <h2>{{ offer.title }}</h2>
+                          <p>{{ offer.idproduct }} x{{offer.quantity}}</p>
+                          <p>Prix : {{ offer.price }} €</p>
+
+                          <!-- Lien vers la page de paiement pour CETTE offre -->
+                          <a href="{% url 'add_to_cart' offer.idoffer %}" hx-get="{% url 'add_to_cart' offer.idoffer %}" hx-target="#content" hx-push-url="true">Acheter cette offre</a>
+
+
+                      </li>
+                  {% endfor %}
+              </ul>
+          {% else %}
+              <p>Aucune offre disponible pour l'instant.</p>
+          {% endif %}
       </section>
     </main>
-  </div>
-</body>
-</html>
+
 {% endblock %}

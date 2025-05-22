@@ -2,18 +2,39 @@
 <html lang="fr">
 <head>
   <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
   <title>{% block title %}MBL Prospect{% endblock %}</title>
     <script src="https://unpkg.com/htmx.org@1.9.2"></script>
 <link rel="stylesheet" href="{% static 'css/panelstyless.css' %}">
 </head>
 <body>
-  <div class="container">
-    {% include "users/sidebar.html" %}  <!-- Sidebar incluse ici -->
+  <button id="toggleSidebar" class="sidebar-toggle">☰</button>
 
-    <main class="main-content" id="content">
+  <div class="container">
+          <div class="overlay" id="overlay"></div>
+
+    {% include "users/sidebar.html" %}  <!-- Sidebar incluse ici -->
+      <div class="page">
+          <div class="header">
+              {% if messages %}
+        <div class="alert alert-container">
+            {% for message in messages %}
+                <div class="alert alert-success">{{ message }}</div>
+            {% endfor %}
+        </div>
+        {% endif %}
+          <a href="{% url 'view_cart' %}" hx-get="{% url 'view_cart' %}" hx-target="#content" hx-push-url="true">
+              <img src="{% static 'img/shopping-cart.png' %}" class="cartlogo">
+          </a>
+        </div>
+          <main class="main-content" id="content">
+
+
+
       {% block content %}
 
           <main class="main-content">
+
       <h2>Tableau de bord</h2>
       <section class="dashboard-card">
         <h3>Statistiques récentes</h3>
@@ -24,6 +45,49 @@
     </main>
         {% endblock %}
     </main>
+
+      </div>
+
+
+
   </div>
+
+<script>
+    // Attendre que le DOM soit complètement chargé
+    window.onload = function() {
+        // Sélectionner tous les éléments d'alerte
+        const alerts = document.querySelectorAll('.alert');
+
+        // Si des alertes existent
+        alerts.forEach(alert => {
+            // Après 3 secondes (3000ms), supprimer l'alerte
+            setTimeout(() => {
+                alert.style.opacity = 0;  // Commencer à disparaître
+                  // Attendre la fin de l'animation (1 seconde)
+            }, 2000);  // Délai de 3 secondes avant de commencer à disparaître
+        });
+    };
+</script>
+<script>
+  const sidebar = document.querySelector('.sidebar');
+  const overlay = document.getElementById('overlay');
+  const toggleBtn = document.getElementById('toggleSidebar');
+
+  toggleBtn.addEventListener('click', () => {
+  console.log("oui oui");
+    sidebar.classList.toggle('open');
+        toggleBtn.style.display = 'none';
+
+    overlay.style.display = 'block';
+  });
+
+  overlay.addEventListener('click', () => {
+    sidebar.classList.remove('open');
+        overlay.style.display = 'none';
+        toggleBtn.style.display = 'block';
+
+  });
+</script>
+
 </body>
 </html>

@@ -1,0 +1,134 @@
+{% load static %}
+<html>
+<head>
+    <title>Paiement</title>
+    <link rel="stylesheet" href="{% static 'css/paymentstyles.css' %}">
+
+</head>
+<body>
+<main class="main-content">
+    <section class="dashboard-card">
+
+    <h2>Paiement pour : {{ user }}</h2>
+
+<table class="payment-table">
+  <thead>
+    <tr>
+        <th>Nom de l'offre</th>
+        <th>Prix de l'offre</th>
+        <th>Quantité</th>
+        <th>Prix Total</th>
+
+    </tr>
+  </thead>
+  <tbody>
+    {% for item in items %}
+    <tr>
+        <td>{{ item.offer.title }}</td>
+        <td>{{ item.offer.price }} €</td>
+        <td>{{ item.quantity }}</td>
+        <td>{{ item.total_price }} €</td>
+
+    </tr>
+    {% endfor %}
+  </tbody>
+    <tfoot>
+    <tr>
+      <td colspan="3" style="text-align: right; font-weight: bold;">Total</td>
+      <td style="font-weight: bold;">{{ total }} €</td>
+    </tr>
+  </tfoot>
+</table>
+
+
+
+
+<form class="payment-form" action="{% url 'confirm_payment' cart.id %}" method="post">
+  {% csrf_token %}
+
+  <div class="form-group">
+    <label>Numéro de carte:</label>
+    <input type="text" name="number" id="card-number"  minlength="19" maxlength="19" required>
+  </div>
+
+  <div class="form-group">
+    <label>CVC:</label>
+    <input type="text" name="cvc" maxlength="3" required>
+  </div>
+
+  <div class="form-group exp-date-group" style="grid-column: span 2;">
+    <label>Date d’expiration :</label>
+    <div class="exp-inputs">
+      <input type="text" class="monthinput" name="exp_month" placeholder="MM" required>
+      <span>/</span>
+      <input type="text" class="yearinput" name="exp_year" placeholder="AAAA" required>
+    </div>
+  </div>
+
+  <button type="submit">Payer</button>
+</form>
+
+    </section>
+    </main>
+<script>
+  const form = document.querySelector('form.payment-form');
+  const cardInput = document.getElementById('card-number');
+  const cvcInput = form.querySelector('input[name="cvc"]');
+  const monthInput = document.querySelector('.monthinput');
+  const yearInput = document.querySelector('.yearinput');
+  const currentYear = new Date().getFullYear();
+  console.log(currentYear +10)
+      const cardNumberInput = document.getElementById('card-number');
+
+  cardNumberInput.addEventListener('input', function (e) {
+    let value = e.target.value.replace(/\D/g, ''); // Supprime tout sauf les chiffres
+    value = value.substring(0, 16); // Max 16 chiffres
+    const parts = value.match(/.{1,4}/g); // Groupe par 4 chiffres
+    e.target.value = parts ? parts.join(' ') : '';
+  });
+  function clearErrors() {
+    cardInput.classList.remove('input-error');
+    cvcInput.classList.remove('input-error');
+    monthInput.classList.remove('input-error');
+    yearInput.classList.remove('input-error');
+
+  }
+
+  form.addEventListener('submit', function(e) {
+    clearErrors();
+
+    const cardNumber = cardInput.value.replace(/\s/g, '');
+    const cvc = cvcInput.value;
+    const month = parseInt(monthInput.value);
+    const year = parseInt(yearInput.value);
+
+
+    let valid = true;
+
+    if (cardNumber.length !== 16) {
+      cardInput.classList.add('input-error');
+      valid = false;
+    }
+
+    if (!/^\d{3}$/.test(cvc)) {
+      cvcInput.classList.add('input-error');
+      valid = false;
+    }
+    if (month <= 0 || month > 12 ) {
+      monthInput.classList.add('input-error');
+      valid = false;
+    }
+    if (year < currentYear || year > currentYear+10 ) {
+      yearInput.classList.add('input-error');
+      valid = false;
+    }
+
+    if (!valid) {
+      e.preventDefault();
+    }
+  });
+</script>
+
+
+</body>
+</html>

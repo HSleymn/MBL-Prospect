@@ -1,0 +1,52 @@
+{% block content %}
+<main class="main-content">
+    <div class="en-tete">
+        <h2>Mes mails envoyés :</h2>
+        <h2>Solde : {{ user.mailbalance }}</h2>
+    </div>
+
+    <section class="dashboard-card">
+        <h3>Envoyer un nouveau mail :</h3>
+            <form method="post" enctype="multipart/form-data" hx-post="{% url 'mailsent_panel' %}" hx-target="#mail-list" hx-swap="innerHTML">
+                {% csrf_token %}
+
+            <!-- Champ Objet -->
+            <label for="subject">Objet du mail :</label>
+            <input type="text" id="subject" name="subject" required><br>
+
+            <!-- Champ Message -->
+            <label for="message">Message :</label>
+            <textarea id="message" name="message" required></textarea><br>
+
+            <!-- Quantité de mails à envoyer -->
+            <label for="quantity">Quantité de mails :</label>
+            <input type="number" id="quantity" name="quantity" min="1" max="{{ user.mailbalance }}" required><br>
+
+            <!-- Domaines -->
+            <label for="domain">Domaines :</label>
+            <select id="domain" name="domain" required>
+                {% for domain in domains %}
+                    <option value="{{ domain.domain_name }}">{{ domain.domain_name }}</option>
+                {% endfor %}
+            </select><br>
+            <!-- Zone géographique -->
+            <label for="geo_zone">Zone géographique (villes/pays/régions) :</label>
+            <input type="text" id="geo_zone" name="geo_zone" placeholder="ex. Paris, France, Europe"><br>
+
+            <button type="submit">Envoyer</button>
+        </form>
+    </section>
+
+    <section id="mail-list" class="dashboard-card">
+        {% if mails %}
+            <ul>
+                {% for mail in mails %}
+                    <li>{{ mail.idcontact.email }} - {{ mail.send_date }}</li>
+                {% endfor %}
+            </ul>
+        {% else %}
+            <p>Aucun mail envoyé.</p>
+        {% endif %}
+    </section>
+</main>
+{% endblock %}
